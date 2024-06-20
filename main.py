@@ -1,16 +1,11 @@
 from fastapi import FastAPI
-from pydantic import BaseModel
+from models.base import Base
+from routes import auth, song
+from database import engine
 
 app = FastAPI()
 
-class UserCreate(BaseModel):
-    name: str
-    email: str
-    password: str
-    
-    
+app.include_router(auth.router, prefix='/auth')
+app.include_router(song.router, prefix='/song')
 
-@app.get('/signup')
-
-def signup_user():
-    pass
+Base.metadata.create_all(engine)
